@@ -29,6 +29,7 @@ class Input extends Component {
             placeholder={this.props.placeholder}
             secureTextEntry={this.props.secret}
             onChangeText={this.props.onChangeText}
+            value={this.props.value}
           />
         </View>
     )

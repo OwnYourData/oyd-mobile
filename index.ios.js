@@ -1,5 +1,7 @@
 import LoginView from './views/loginview';
-import Overview from './views/overview'
+import Login from './common/components/login';
+import Overview from './views/overview';
+import PiaConfigurationView from './views/PiaConfigurationView';
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -10,12 +12,15 @@ import {
   View
 } from 'react-native';
 
+import Camera from 'react-native-camera';
+
+
+import QRCodeScreen from './QRCodeScreen';
 class Navigation extends Component{
   render() {
     return (
       <Navigator
-        /*style={styles.container}*/
-        initialRoute={{id: 'login'}}
+        initialRoute={{id: 'piaconfiguration'}}
         renderScene={this.navigatorRenderScene}/>
     );
   }
@@ -24,9 +29,13 @@ class Navigation extends Component{
     _navigator = navigator;
     switch (route.id) {
       case 'login':
-        return (<LoginView navigator={navigator} title="Login"/>);
+        return (<Login navigator={navigator} {...route.passProps} title="Login"/>);
+      case 'piaconfiguration':
+        return (<PiaConfigurationView navigator={navigator} title="PIA Configuration"/>);
       case 'overview':
         return (<Overview navigator={navigator} title="Overview"/>)
+      case 'qr':
+          return (<QRCodeScreen navigator={navigator} {...route.passProps} title="QRScan"/>)
     }
   }
 }

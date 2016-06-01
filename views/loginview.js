@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import Login from './../common/components/login'
+import Login from './../common/components/login';
 import {
   AppRegistry,
   Image,
