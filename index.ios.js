@@ -5,6 +5,7 @@ import PiaConfigurationView from './views/PiaConfigurationView';
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  AsyncStorage,
   Image,
   StyleSheet,
   Navigator,
@@ -17,12 +18,35 @@ import Camera from 'react-native-camera';
 
 import QRCodeScreen from './QRCodeScreen';
 class Navigation extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      initialized: false,
+      configuration: null
+    }
+  }
+
   render() {
-    return (
-      <Navigator
-        initialRoute={{id: 'piaconfiguration'}}
-        renderScene={this.navigatorRenderScene}/>
-    );
+    if (this.state.initialized === false) {
+      AsyncStorage.getItem('configuration', (err, result) => {
+        if (result) {
+            this.setState({initialized: true,configuration: JSON.parse(result)});
+        } else {
+          this.setState({initialized: true});
+        }
+      });
+    }
+
+    if (this.state.initialized) {
+      if (this.state.configuration) {
+        return  (<Navigator initialRoute={{id: 'login'}} renderScene={this.navigatorRenderScene}/>);
+      } else {
+        return  (<Navigator initialRoute={{id: 'piaconfiguration'}} renderScene={this.navigatorRenderScene}/>);
+      }
+    } else {
+      return (<Text>Loading...</Text>);
+    }
+
   }
 
   navigatorRenderScene(route, navigator) {

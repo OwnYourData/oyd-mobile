@@ -7,6 +7,7 @@ import LoginForm from './LoginForm';
 import LoginQR from './LoginQR';
 import {
   AppRegistry,
+  AsyncStorage,
   Image,
   StyleSheet,
   Text,
@@ -27,13 +28,20 @@ class Login extends Component {
     super(props);
     console.log('properties: '+props.piaAddress);
     this.state = {
-      username: 'admin',
-      password: 'admin',
+      username: '',
+      password: '',
       piaAddress: props.piaAddress,
       piaIdentifier: props.piaIdentifier,
       piaSecret: props.piaSecret,
       error: null
     }
+
+    AsyncStorage.getItem('configuration', (err, result) => {
+      if (result) {
+          var json = JSON.parse(result);
+        this.setState({piaAddress: json.piaAddress, piaIdentifier: json.piaIdentifier, piaSecret: json.piaSecret, username: json.username });
+      }
+    });
   }
 
    render(){
@@ -43,7 +51,7 @@ class Login extends Component {
               <Image source={require('./../../logo.png')} style={styles.logo} />
 
              <View style={styles.form}>
-                <Input placeholder="Username"  onChangeText={(text) => {this.setState({username: text})}}/>
+                <Input placeholder="Username" value={this.state.username} onChangeText={(text) => {this.setState({username: text})}}/>
                 <Input ref="password" placeholder="Password" secret={true}   onChangeText={(text) => {this.setState({password: text})}}/>
              </View>
 
@@ -103,7 +111,11 @@ class Login extends Component {
         if (response.error) {
           this.setState({error: response.error, error_description: response.error_description});
         } else {
-          this.props.navigator.replace({id: 'overview'});
+          AsyncStorage.setItem('configuration',JSON.stringify(
+            {piaAddress: this.state.piaAddress, piaIdentifier: this.state.piaIdentifier, piaSecret: this.state.piaSecret, username: this.state.username}
+          ),() => {
+              this.props.navigator.replace({id: 'overview'});
+          });
         }
       })
     .catch((error) => {
