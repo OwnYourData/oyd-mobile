@@ -1,4 +1,4 @@
-package com.oyd;
+package eu.ownyourdata;
 
 import com.facebook.react.ReactActivity;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
@@ -17,7 +17,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "oyd";
+        return "OwnYourData";
     }
 
     /**

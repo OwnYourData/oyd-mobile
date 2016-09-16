@@ -12,12 +12,14 @@ import {
   Text,
   View
 } from 'react-native';
+import PluginListView from './../common/components/PluginListView';
 
 class Overview extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Welcome</Text>
+
+          <PluginListView/>
         </View>
     );
   }
@@ -26,7 +28,7 @@ class Overview extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'gray'
+    backgroundColor: 'white'
   },
 });
 

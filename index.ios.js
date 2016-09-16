@@ -13,8 +13,6 @@ import {
   View
 } from 'react-native';
 
-import Camera from 'react-native-camera';
-
 
 import QRCodeScreen from './QRCodeScreen';
 class Navigation extends Component{
@@ -65,4 +63,4 @@ class Navigation extends Component{
 }
 
 
-AppRegistry.registerComponent('oyd', () => Navigation);
+AppRegistry.registerComponent('OwnYourData', () => Navigation);

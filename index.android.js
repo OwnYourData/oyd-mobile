@@ -1,51 +1,66 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
-
+import LoginView from './views/loginview';
+import Login from './common/components/login';
+import Overview from './views/overview';
+import PiaConfigurationView from './views/PiaConfigurationView';
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
+    AppRegistry,
+    AsyncStorage,
+    Image,
+    StyleSheet,
+    Navigator,
+    Text,
+    View
 } from 'react-native';
 
-class oyd extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
-    );
-  }
+
+import QRCodeScreen from './QRCodeScreen';
+class Navigation extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            initialized: false,
+            configuration: null
+        }
+    }
+
+    render() {
+        if (this.state.initialized === false) {
+            AsyncStorage.getItem('configuration', (err, result) => {
+                if (result) {
+                    this.setState({initialized: true,configuration: JSON.parse(result)});
+                } else {
+                    this.setState({initialized: true});
+                }
+            });
+        }
+
+        if (this.state.initialized) {
+            if (this.state.configuration) {
+                return  (<Navigator initialRoute={{id: 'login'}} renderScene={this.navigatorRenderScene}/>);
+            } else {
+                return  (<Navigator initialRoute={{id: 'piaconfiguration'}} renderScene={this.navigatorRenderScene}/>);
+            }
+        } else {
+            return (<Text>Loading...</Text>);
+        }
+
+    }
+
+    navigatorRenderScene(route, navigator) {
+        _navigator = navigator;
+        switch (route.id) {
+            case 'login':
+                return (<Login navigator={navigator} {...route.passProps} title="Login"/>);
+            case 'piaconfiguration':
+                return (<PiaConfigurationView navigator={navigator} title="PIA Configuration"/>);
+            case 'overview':
+                return (<Overview navigator={navigator} title="Overview"/>)
+            case 'qr':
+                return (<QRCodeScreen navigator={navigator} {...route.passProps} title="QRScan"/>)
+        }
+    }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
-AppRegistry.registerComponent('oyd', () => oyd);
+AppRegistry.registerComponent('OwnYourData', () => Navigation);

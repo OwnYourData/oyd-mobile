@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import Button from 'react-native-button';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Base64 from 'base-64';
 import Input from './input';
-import LoginForm from './LoginForm';
-import LoginQR from './LoginQR';
 import {
   AppRegistry,
   AsyncStorage,
@@ -21,7 +18,7 @@ import {
   View
 } from 'react-native';
 
-var QRCodeScreen = require('./../../QRCodeScreen.ios.js');
+var QRCodeScreen = require('./../../QRCodeScreen');
 
 class Login extends Component {
   constructor(props) {
@@ -49,7 +46,6 @@ class Login extends Component {
        <Image source={require('./../../login_background.png')} style={styles.background}>
        <View style={styles.container}>
               <Image source={require('./../../logo.png')} style={styles.logo} />
-
              <View style={styles.form}>
                 <Input placeholder="Username" value={this.state.username} onChangeText={(text) => {this.setState({username: text})}}/>
                 <Input ref="password" placeholder="Password" secret={true}   onChangeText={(text) => {this.setState({password: text})}}/>
@@ -111,6 +107,7 @@ class Login extends Component {
         if (response.error) {
           this.setState({error: response.error, error_description: response.error_description});
         } else {
+          AsyncStorage.setItem('token', JSON.stringify(response));
           AsyncStorage.setItem('configuration',JSON.stringify(
             {piaAddress: this.state.piaAddress, piaIdentifier: this.state.piaIdentifier, piaSecret: this.state.piaSecret, username: this.state.username}
           ),() => {
@@ -128,7 +125,7 @@ class Login extends Component {
 var styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover',
+    //resizeMode: 'cover',
     width: null,
     height: null,
   },
@@ -176,6 +173,16 @@ var styles = StyleSheet.create({
       borderColor: 'gray',
       borderBottomLeftRadius: 1,
       borderRadius: 10
+    },
+    back: {
+        margin:20,
+        height: 40,
+        padding: 10,
+        color: 'white',
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderBottomLeftRadius: 1,
+        borderRadius: 10
     }
 });
 

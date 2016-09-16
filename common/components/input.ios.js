@@ -39,7 +39,7 @@ class Input extends Component {
 var styles = StyleSheet.create({
     container: {
         width: 200,
-        height: 30,
+        height: 50,
         borderColor: 'gray',
         borderBottomWidth: .5,
         padding: 10,
@@ -52,6 +52,6 @@ var styles = StyleSheet.create({
     }
 });
 
-Input.defaultProps = { icon: "user", placeholder: "username", secret: false};
+Input.defaultProps = { placeholder: "username", secret: false};
 
 export default Input;
