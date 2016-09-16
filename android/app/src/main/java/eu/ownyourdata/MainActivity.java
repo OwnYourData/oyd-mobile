@@ -1,10 +1,10 @@
 package eu.ownyourdata;
 
 import com.facebook.react.ReactActivity;
-import com.lwansbrough.RCTCamera.RCTCameraPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.lwansbrough.RCTCamera.RCTCameraPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 
 import java.util.Arrays;
 import java.util.List;
