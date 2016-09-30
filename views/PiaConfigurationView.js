@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
       alignItems: 'center'
   },
   logo: {
-    flex: .7,
+    height: 300,
     width: 300,
     resizeMode: 'contain',
   },
