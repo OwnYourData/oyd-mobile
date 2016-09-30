@@ -136,7 +136,8 @@ var styles = StyleSheet.create({
     },
     logo: {
       flex: .7,
-      width: 300,
+      width: 275,
+        height: 300,
       resizeMode: 'contain',
     },
     top: {
