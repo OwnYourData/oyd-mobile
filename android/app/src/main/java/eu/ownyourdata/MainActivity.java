@@ -1,6 +1,7 @@
 package eu.ownyourdata;
 
 import com.facebook.react.ReactActivity;
+import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
@@ -37,6 +38,7 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RCTCameraPackage(),
             new RCTCameraPackage(),
             new VectorIconsPackage()
         );
