@@ -5,7 +5,10 @@ import Input from './input';
 import {
   AppRegistry,
   AsyncStorage,
+    Dimensions,
   Image,
+  Keyboard,
+    LayoutAnimation,
   StyleSheet,
   Text,
   TextInput,
@@ -41,11 +44,38 @@ class Login extends Component {
     });
   }
 
+    componentWillMount () {
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow.bind(this))
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide.bind(this))
+    }
+
+    componentWillUnmount () {
+        this.keyboardDidShowListener.remove()
+        this.keyboardDidHideListener.remove()
+    }
+
+    keyboardDidShow (e) {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        let newSize = Dimensions.get('window').height - e.endCoordinates.height
+        this.setState({
+            visibleHeight: newSize,
+            topLogo: {width: 100, height: 100}
+        })
+    }
+
+    keyboardDidHide (e) {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        this.setState({
+            visibleHeight: Dimensions.get('window').height,
+            topLogo: {width: Dimensions.get('window').width}
+        });
+    }
+
    render(){
      return (
        <Image source={require('./../../login_background.png')} style={styles.background}>
-       <View style={styles.container}>
-              <Image source={require('./../../logo.png')} style={styles.logo} />
+       <View style={[styles.container, {height: this.state.visibleHeight}]}>
+              <Image source={require('./../../logo.png')} style={[styles.logo, this.state.topLogo]} />
              <View style={styles.form}>
                 <Input placeholder="Username" value={this.state.username} onChangeText={(text) => {this.setState({username: text})}}/>
                 <Input ref="password" placeholder="Password" secret={true}   onChangeText={(text) => {this.setState({password: text})}}/>
@@ -67,7 +97,7 @@ class Login extends Component {
       this.props.navigator.replace({
         id: 'qr',
         passProps: {
-          onSucess: this.onSucess.bind(this)
+          onSucess: this.onSuccess.bind(this)
         }
       });
       /*
@@ -81,7 +111,7 @@ class Login extends Component {
    */
  }
 
- onSucess(result) {
+ onSuccess(result) {
    console.log(result);
      this.props.navigator.replace({id: 'overview'});
  }
@@ -135,10 +165,9 @@ var styles = StyleSheet.create({
         alignItems: 'center'
     },
     logo: {
-      flex: .7,
-      width: 275,
         height: 300,
-      resizeMode: 'contain',
+        width: 300,
+        resizeMode: 'contain',
     },
     top: {
         flex: .7,
@@ -151,7 +180,6 @@ var styles = StyleSheet.create({
         paddingBottom: 20
     },
     quarterHeight: {
-        flex: .25,
         backgroundColor: 'transparent',
         alignItems: 'stretch',
     },

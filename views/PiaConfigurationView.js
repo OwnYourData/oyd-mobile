@@ -3,7 +3,10 @@ import Button from 'react-native-button';
 import Input from './../common/components/input';
 import {
   AppRegistry,
+  Dimensions,
   Image,
+  Keyboard,
+LayoutAnimation,
   StyleSheet,
   Text,
   TextInput,
@@ -32,11 +35,37 @@ class PiaConfigurationView extends Component {
     }
   }
 
-  render() {
+    componentWillMount () {
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow.bind(this))
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide.bind(this))
+    }
+
+    componentWillUnmount () {
+        this.keyboardDidShowListener.remove()
+        this.keyboardDidHideListener.remove()
+    }
+
+    keyboardDidShow (e) {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        let newSize = Dimensions.get('window').height - e.endCoordinates.height
+        this.setState({
+            visibleHeight: newSize,
+            topLogo: {width: 100, height: 100}
+        })
+    }
+
+    keyboardDidHide (e) {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        this.setState({
+            visibleHeight: Dimensions.get('window').height,
+            topLogo: {width: Dimensions.get('window').width}
+        });
+    }
+    render() {
     return (
       <Image source={require('./../login_background.png')} style={styles.background}>
-      <View style={styles.container}>
-             <Image source={require('./../logo.png')} style={styles.logo} />
+          <View style={ [styles.container, {height: this.state.visibleHeight}] }>
+             <Image source={require('./../logo.png')} style={[styles.logo, this.state.topLogo]}/>
 
             <View style={styles.form}>
             <Button style={styles.scan} onPress={this.onPressQRCode.bind(this)}>
@@ -76,7 +105,7 @@ class PiaConfigurationView extends Component {
       this.props.navigator.push({
         id: 'login',
         passProps: {
-          piaAddress: this.state.piaAddress,
+          piaAddress: this.state.piaAddress.replace(/^https?:\/\//, ""),
           piaIdentifier: this.state.piaIdentifier,
           piaSecret: this.state.piaSecret
         }
