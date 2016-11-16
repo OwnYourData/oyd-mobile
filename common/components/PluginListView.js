@@ -69,7 +69,7 @@ class PluginListView extends Component {
     render() {
         var view;
         if(this.state.loading) {
-            view = <Text>Loading...</Text>
+            view = <Text>Lade...</Text>
         } else {
             view =  <ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} />
         }

@@ -30,10 +30,10 @@ constructor(props) {
   render() {
     return (
       <View style={styles.form}>
-         <Input placeholder="Username"  onChangeText={(text) => {this.setState({username: text})}}/>
-         <Input ref="password" placeholder="Password" secret={true}   onChangeText={(text) => {this.setState({password: text})}}/>
-         <Input ref="piaAddress" placeholder="PIA Address"  onChangeText={(text) => {this.setState({piaAddress: text})}}/>
-         <Input ref="piaSecret" placeholder="PIA Secret" secret={true} onChangeText={(text) => {this.setState({piaSecret: text})}}/>
+         <Input placeholder="Benutzer"  onChangeText={(text) => {this.setState({username: text})}}/>
+         <Input ref="password" placeholder="Passwort" secret={true}   onChangeText={(text) => {this.setState({password: text})}}/>
+         <Input ref="piaAddress" placeholder="Adresse des Datentresors"  onChangeText={(text) => {this.setState({piaAddress: text})}}/>
+         <Input ref="piaSecret" placeholder="Passwort (Secret)" secret={true} onChangeText={(text) => {this.setState({piaSecret: text})}}/>
          <View/>
       </View>
     );

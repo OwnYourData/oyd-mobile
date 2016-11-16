@@ -69,17 +69,17 @@ class PiaConfigurationView extends Component {
 
             <View style={styles.form}>
             <Button style={styles.scan} onPress={this.onPressQRCode.bind(this)}>
-                Scan QR
+                QR Code scannen
             </Button>
-            <Text style={styles.description}>or enter manualy</Text>
-               <Input ref="piaAddress" placeholder="PIA Address" value={this.state.piaAddress} onChangeText={(text) => {this.setState({piaAddress: text})}}/>
-               <Input ref="piaIdentifier" placeholder="PIA Identifier"  value={this.state.piaIdentifier} onChangeText={(text) => {this.setState({piaIdentifier: text})}}/>
-               <Input ref="piaSecret" placeholder="PIA Secret" value={this.state.piaSecret} secret={true} onChangeText={(text) => {this.setState({piaSecret: text})}}/>
+            <Text style={styles.description}>oder selbst eingeben</Text>
+               <Input ref="piaAddress" placeholder="Adresse des Datentresors" value={this.state.piaAddress} onChangeText={(text) => {this.setState({piaAddress: text})}}/>
+               <Input ref="piaIdentifier" placeholder="Kennung (Identifier)"  value={this.state.piaIdentifier} onChangeText={(text) => {this.setState({piaIdentifier: text})}}/>
+               <Input ref="piaSecret" placeholder="Passwort (Secret)" value={this.state.piaSecret} secret={true} onChangeText={(text) => {this.setState({piaSecret: text})}}/>
             </View>
 
             <View style={styles.quarterHeight}>
              <Button style={styles.configure} onPress={this.onConfigure.bind(this)}>
-                 Next
+                 Weiter
              </Button>
             </View>
         </View>

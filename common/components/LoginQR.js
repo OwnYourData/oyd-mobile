@@ -32,10 +32,10 @@ constructor(props) {
   render() {
     return (
       <View style={styles.form}>
-         <Input placeholder="Username"  onChangeText={(text) => {this.setState({username: text})}}/>
-         <Input placeholder="Password" secret={true}   onChangeText={(text) => {this.setState({password: text})}}/>
+         <Input placeholder="Benutzer"  onChangeText={(text) => {this.setState({username: text})}}/>
+         <Input placeholder="Passwort" secret={true}   onChangeText={(text) => {this.setState({password: text})}}/>
          <Button style={styles.scan} onPress={this.scan.bind(this)}>
-                   Scan QR
+                   QR Code scannen
           </Button>
       </View>
     );

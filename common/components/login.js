@@ -77,13 +77,13 @@ class Login extends Component {
        <View style={[styles.container, {height: this.state.visibleHeight}]}>
               <Image source={require('./../../logo.png')} style={[styles.logo, this.state.topLogo]} />
              <View style={styles.form}>
-                <Input placeholder="Username" value={this.state.username} onChangeText={(text) => {this.setState({username: text})}}/>
-                <Input ref="password" placeholder="Password" secret={true}   onChangeText={(text) => {this.setState({password: text})}}/>
+                <Input placeholder="Benutzer" value={this.state.username} onChangeText={(text) => {this.setState({username: text})}}/>
+                <Input ref="password" placeholder="Passwort" secret={true}   onChangeText={(text) => {this.setState({password: text})}}/>
              </View>
 
              <View style={styles.quarterHeight}>
               <Button style={styles.authenticate} onPress={this.authenticate.bind(this)}>
-                  Authenticate
+                  Anmelden
               </Button>
 
               {this.state.error ? <Text>{this.state.error_description}</Text> : false}
