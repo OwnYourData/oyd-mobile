@@ -119,7 +119,7 @@ class PiaConfigurationView extends Component {
 
  onSucess(result) {
    var json = JSON.parse(result);
-   this.setState({piaAddress: json.protocol+json.host, piaIdentifier: json.id, piaSecret: json.secret});
+   this.setState({piaAddress: json.protocol+'//'+json.host, piaIdentifier: json.id, piaSecret: json.secret});
  }
 
   onConfigure() {
