@@ -44,38 +44,12 @@ class Login extends Component {
     });
   }
 
-    componentWillMount () {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow.bind(this))
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide.bind(this))
-    }
-
-    componentWillUnmount () {
-        this.keyboardDidShowListener.remove()
-        this.keyboardDidHideListener.remove()
-    }
-
-    keyboardDidShow (e) {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        let newSize = Dimensions.get('window').height - e.endCoordinates.height
-        this.setState({
-            visibleHeight: newSize,
-            topLogo: {width: 100, height: 100}
-        })
-    }
-
-    keyboardDidHide (e) {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({
-            visibleHeight: Dimensions.get('window').height,
-            topLogo: {width: Dimensions.get('window').width}
-        });
-    }
 
    render(){
      return (
        <Image source={require('./../../login_background.png')} style={styles.background}>
-       <View style={[styles.container, {height: this.state.visibleHeight}]}>
-              <Image source={require('./../../logo.png')} style={[styles.logo, this.state.topLogo]} />
+       <View style={[styles.container]}>
+              <Image source={require('./../../logo.png')} style={[styles.logo]} />
              <View style={styles.form}>
                 <Input placeholder="Benutzer" value={this.state.username} onChangeText={(text) => {this.setState({username: text})}}/>
                 <Input ref="password" placeholder="Passwort" secret={true}   onChangeText={(text) => {this.setState({password: text})}}/>
@@ -93,28 +67,6 @@ class Login extends Component {
      )
    }
 
-  onPressQRCode() {
-      this.props.navigator.replace({
-        id: 'qr',
-        passProps: {
-          onSucess: this.onSuccess.bind(this)
-        }
-      });
-      /*
-   this.props.navigator.push({
-     component: QRCodeScreen,
-     title: 'QRCode',
-     passProps: {
-       onSucess: this.onSucess,
-     },
-   });
-   */
- }
-
- onSuccess(result) {
-   console.log(result);
-     this.props.navigator.replace({id: 'overview'});
- }
 
    authenticate() {
      this.setState({error:undefined});
@@ -126,7 +78,7 @@ class Login extends Component {
      headers.append("Accept", "application/json");
      headers.append("Content-Type","application/x-www-form-urlencoded");
      console.log('sending request to'+this.state.piaAddress);
-    fetch('http://'+this.state.piaAddress+'/oauth/token', {
+    fetch(this.state.piaAddress+'/oauth/token', {
       method: 'POST',
       headers: headers,
       body: data
@@ -165,8 +117,8 @@ var styles = StyleSheet.create({
         alignItems: 'center'
     },
     logo: {
-        height: 300,
-        width: 300,
+        height: 150,
+        width: 150,
         resizeMode: 'contain',
     },
     top: {

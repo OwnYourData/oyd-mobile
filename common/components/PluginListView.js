@@ -20,7 +20,7 @@ class PluginListView extends Component {
                         headers.append("Authorization", "Bearer " + json.access_token);
                         headers.append("Accept", "application/json");
 
-                        fetch('http://'+piaAddress+'/api/plugins', {
+                        fetch(piaAddress+'/api/plugins', {
                             method: 'GET',
                             headers: headers
                         })

@@ -8,6 +8,7 @@ import {
   Keyboard,
 LayoutAnimation,
   StyleSheet,
+    KeyboardAvoidingView,
   Text,
   TextInput,
   Slider,
@@ -47,44 +48,64 @@ class PiaConfigurationView extends Component {
 
     keyboardDidShow (e) {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        let newSize = Dimensions.get('window').height - e.endCoordinates.height
         this.setState({
-            visibleHeight: newSize,
-            topLogo: {width: 100, height: 100}
-        })
+            keyboardShown : true,
+        });
     }
 
     keyboardDidHide (e) {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({
-            visibleHeight: Dimensions.get('window').height,
-            topLogo: {width: Dimensions.get('window').width}
+            keyboardShown : false,
         });
     }
     render() {
     return (
+        <View style={styles.main}>
       <Image source={require('./../login_background.png')} style={styles.background}>
-          <View style={ [styles.container, {height: this.state.visibleHeight}] }>
-             <Image source={require('./../logo.png')} style={[styles.logo, this.state.topLogo]}/>
-
+          <View style={ [styles.container] }>
+              {this.renderLogo()}
             <View style={styles.form}>
-            <Button style={styles.scan} onPress={this.onPressQRCode.bind(this)}>
-                QR Code scannen
-            </Button>
-            <Text style={styles.description}>oder selbst eingeben</Text>
+                {this.renderQR()}
                <Input ref="piaAddress" placeholder="Adresse des Datentresors" value={this.state.piaAddress} onChangeText={(text) => {this.setState({piaAddress: text})}}/>
                <Input ref="piaIdentifier" placeholder="Kennung (Identifier)"  value={this.state.piaIdentifier} onChangeText={(text) => {this.setState({piaIdentifier: text})}}/>
                <Input ref="piaSecret" placeholder="Passwort (Secret)" value={this.state.piaSecret} secret={true} onChangeText={(text) => {this.setState({piaSecret: text})}}/>
             </View>
 
-            <View style={styles.quarterHeight}>
+            <View>
              <Button style={styles.configure} onPress={this.onConfigure.bind(this)}>
                  Weiter
              </Button>
             </View>
         </View>
       </Image>
+            </View>
     );
+  }
+
+  renderLogo() {
+    if (false) {
+        return null;
+    } else {
+        return (
+            <Image source={require('./../logo.png')} style={[styles.logo]}/>
+        );
+    }
+  }
+
+  renderQR() {
+      if(this.state.keyboardShown) {
+          return null;
+      } else {
+          return (
+              <View>
+              <Button style={styles.scan} onPress={this.onPressQRCode.bind(this)}>
+                  QR Code scannen
+              </Button>
+              <Text style={styles.description}>oder selbst eingeben</Text>
+                  </View>
+          );
+      }
   }
 
   onPressQRCode() {
@@ -98,14 +119,14 @@ class PiaConfigurationView extends Component {
 
  onSucess(result) {
    var json = JSON.parse(result);
-   this.setState({piaAddress: json.host, piaIdentifier: json.id, piaSecret: json.secret});
+   this.setState({piaAddress: json.protocol+json.host, piaIdentifier: json.id, piaSecret: json.secret});
  }
 
   onConfigure() {
       this.props.navigator.push({
         id: 'login',
         passProps: {
-          piaAddress: this.state.piaAddress.replace(/^https?:\/\//, ""),
+          piaAddress: this.state.piaAddress.startsWith('http') ? this.state.piaAddress : 'http://'+this.state.piaAddress,
           piaIdentifier: this.state.piaIdentifier,
           piaSecret: this.state.piaSecret
         }
@@ -120,14 +141,19 @@ const styles = StyleSheet.create({
     width: null,
     height: null,
   },
+  main: {
+      flex: 1,
+      flexDirection: 'row'
+  },
   container: {
       flex: 1,
       flexDirection: 'column',
-      alignItems: 'center'
+      alignItems: 'center',
+      paddingTop: 20
   },
   logo: {
-    height: 300,
-    width: 300,
+    height: 150,
+    width: 150,
     resizeMode: 'contain',
   },
   form: {
@@ -159,12 +185,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderBottomLeftRadius: 1,
     borderRadius: 10
-  },
-  quarterHeight: {
-      flex: .25,
-      backgroundColor: 'transparent',
-      alignItems: 'stretch',
-  },
+  }
 });
 
 
