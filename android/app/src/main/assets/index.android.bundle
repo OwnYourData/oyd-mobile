@@ -5494,47 +5494,21 @@ var json=JSON.parse(result);
 _this.setState({piaAddress:json.piaAddress,piaIdentifier:json.piaIdentifier,piaSecret:json.piaSecret,username:json.username});
 }
 });return _this;
-}babelHelpers.createClass(Login,[{key:'componentWillMount',value:function componentWillMount()
+}babelHelpers.createClass(Login,[{key:'render',value:function render()
 
-{
-this.keyboardDidShowListener=_reactNative.Keyboard.addListener('keyboardDidShow',this.keyboardDidShow.bind(this));
-this.keyboardDidHideListener=_reactNative.Keyboard.addListener('keyboardDidHide',this.keyboardDidHide.bind(this));
-}},{key:'componentWillUnmount',value:function componentWillUnmount()
-
-{
-this.keyboardDidShowListener.remove();
-this.keyboardDidHideListener.remove();
-}},{key:'keyboardDidShow',value:function keyboardDidShow(
-
-e){
-_reactNative.LayoutAnimation.configureNext(_reactNative.LayoutAnimation.Presets.easeInEaseOut);
-var newSize=_reactNative.Dimensions.get('window').height-e.endCoordinates.height;
-this.setState({
-visibleHeight:newSize,
-topLogo:{width:100,height:100}});
-
-}},{key:'keyboardDidHide',value:function keyboardDidHide(
-
-e){
-_reactNative.LayoutAnimation.configureNext(_reactNative.LayoutAnimation.Presets.easeInEaseOut);
-this.setState({
-visibleHeight:_reactNative.Dimensions.get('window').height,
-topLogo:{width:_reactNative.Dimensions.get('window').width}});
-
-}},{key:'render',value:function render()
 
 {var _this2=this;
 return(
 _react2.default.createElement(_reactNative.Image,{source:require(655 /* ./../../login_background.png */),style:styles.background},
-_react2.default.createElement(_reactNative.View,{style:[styles.container,{height:this.state.visibleHeight}]},
-_react2.default.createElement(_reactNative.Image,{source:require(656 /* ./../../logo.png */),style:[styles.logo,this.state.topLogo]}),
+_react2.default.createElement(_reactNative.View,{style:[styles.container]},
+_react2.default.createElement(_reactNative.Image,{source:require(656 /* ./../../logo.png */),style:[styles.logo]}),
 _react2.default.createElement(_reactNative.View,{style:styles.form},
-_react2.default.createElement(_input2.default,{placeholder:'Username',value:this.state.username,onChangeText:function onChangeText(text){_this2.setState({username:text});}}),
-_react2.default.createElement(_input2.default,{ref:'password',placeholder:'Password',secret:true,onChangeText:function onChangeText(text){_this2.setState({password:text});}})),
+_react2.default.createElement(_input2.default,{placeholder:'Benutzer',value:this.state.username,onChangeText:function onChangeText(text){_this2.setState({username:text});}}),
+_react2.default.createElement(_input2.default,{ref:'password',placeholder:'Passwort',secret:true,onChangeText:function onChangeText(text){_this2.setState({password:text});}})),
 
 
 _react2.default.createElement(_reactNative.View,{style:styles.quarterHeight},
-_react2.default.createElement(_reactNativeButton2.default,{style:styles.authenticate,onPress:this.authenticate.bind(this)},'Authenticate'),
+_react2.default.createElement(_reactNativeButton2.default,{style:styles.authenticate,onPress:this.authenticate.bind(this)},'Anmelden'),
 
 
 
@@ -5543,30 +5517,8 @@ this.state.error?_react2.default.createElement(_reactNative.Text,null,this.state
 
 
 
-}},{key:'onPressQRCode',value:function onPressQRCode()
-
-{
-this.props.navigator.replace({
-id:'qr',
-passProps:{
-onSucess:this.onSuccess.bind(this)}});
-
-
-
-
-
-
-
-
-
-
-
-}},{key:'onSuccess',value:function onSuccess(
-
-result){
-console.log(result);
-this.props.navigator.replace({id:'overview'});
 }},{key:'authenticate',value:function authenticate()
+
 
 {var _this3=this;
 this.setState({error:undefined});
@@ -5578,7 +5530,7 @@ headers.append("Authorization","Basic "+_base2.default.encode('piaapp:'+this.sta
 headers.append("Accept","application/json");
 headers.append("Content-Type","application/x-www-form-urlencoded");
 console.log('sending request to'+this.state.piaAddress);
-fetch('http://'+this.state.piaAddress+'/oauth/token',{
+fetch(this.state.piaAddress+'/oauth/token',{
 method:'POST',
 headers:headers,
 body:data}).
@@ -5617,8 +5569,8 @@ flexDirection:'column',
 alignItems:'center'},
 
 logo:{
-height:300,
-width:300,
+height:150,
+width:150,
 resizeMode:'contain'},
 
 top:{
@@ -82392,7 +82344,7 @@ var headers=new Headers();
 headers.append("Authorization","Bearer "+json.access_token);
 headers.append("Accept","application/json");
 
-fetch('http://'+piaAddress+'/api/plugins',{
+fetch(piaAddress+'/api/plugins',{
 method:'GET',
 headers:headers}).
 
@@ -82441,7 +82393,7 @@ _react2.default.createElement(_reactNative.View,{style:styles.separator}))));
 {
 var view;
 if(this.state.loading){
-view=_react2.default.createElement(_reactNative.Text,null,'Loading...');
+view=_react2.default.createElement(_reactNative.Text,null,'Lade...');
 }else{
 view=_react2.default.createElement(_reactNative.ListView,{dataSource:this.state.dataSource,renderRow:this.renderRow.bind(this)});
 }
@@ -82502,6 +82454,7 @@ var _reactNative=require(47 /* react-native */);var
 
 
 
+
 PiaConfigurationView=function(_Component){babelHelpers.inherits(PiaConfigurationView,_Component);
 function PiaConfigurationView(props){babelHelpers.classCallCheck(this,PiaConfigurationView);var _this=babelHelpers.possibleConstructorReturn(this,(PiaConfigurationView.__proto__||Object.getPrototypeOf(PiaConfigurationView)).call(this,
 props));
@@ -82529,44 +82482,64 @@ this.keyboardDidHideListener.remove();
 
 e){
 _reactNative.LayoutAnimation.configureNext(_reactNative.LayoutAnimation.Presets.easeInEaseOut);
-var newSize=_reactNative.Dimensions.get('window').height-e.endCoordinates.height;
 this.setState({
-visibleHeight:newSize,
-topLogo:{width:100,height:100}});
+keyboardShown:true});
 
 }},{key:'keyboardDidHide',value:function keyboardDidHide(
 
 e){
 _reactNative.LayoutAnimation.configureNext(_reactNative.LayoutAnimation.Presets.easeInEaseOut);
 this.setState({
-visibleHeight:_reactNative.Dimensions.get('window').height,
-topLogo:{width:_reactNative.Dimensions.get('window').width}});
+keyboardShown:false});
 
 }},{key:'render',value:function render()
 {var _this2=this;
 return(
+_react2.default.createElement(_reactNative.View,{style:styles.main},
 _react2.default.createElement(_reactNative.Image,{source:require(655 /* ./../login_background.png */),style:styles.background},
-_react2.default.createElement(_reactNative.View,{style:[styles.container,{height:this.state.visibleHeight}]},
-_react2.default.createElement(_reactNative.Image,{source:require(656 /* ./../logo.png */),style:[styles.logo,this.state.topLogo]}),
-
+_react2.default.createElement(_reactNative.View,{style:[styles.container]},
+this.renderLogo(),
 _react2.default.createElement(_reactNative.View,{style:styles.form},
-_react2.default.createElement(_reactNativeButton2.default,{style:styles.scan,onPress:this.onPressQRCode.bind(this)},'Scan QR'),
+this.renderQR(),
+_react2.default.createElement(_input2.default,{ref:'piaAddress',placeholder:'Adresse des Datentresors',value:this.state.piaAddress,onChangeText:function onChangeText(text){_this2.setState({piaAddress:text});}}),
+_react2.default.createElement(_input2.default,{ref:'piaIdentifier',placeholder:'Kennung (Identifier)',value:this.state.piaIdentifier,onChangeText:function onChangeText(text){_this2.setState({piaIdentifier:text});}}),
+_react2.default.createElement(_input2.default,{ref:'piaSecret',placeholder:'Passwort (Secret)',value:this.state.piaSecret,secret:true,onChangeText:function onChangeText(text){_this2.setState({piaSecret:text});}})),
 
 
-_react2.default.createElement(_reactNative.Text,{style:styles.description},'or enter manualy'),
-_react2.default.createElement(_input2.default,{ref:'piaAddress',placeholder:'PIA Address',value:this.state.piaAddress,onChangeText:function onChangeText(text){_this2.setState({piaAddress:text});}}),
-_react2.default.createElement(_input2.default,{ref:'piaIdentifier',placeholder:'PIA Identifier',value:this.state.piaIdentifier,onChangeText:function onChangeText(text){_this2.setState({piaIdentifier:text});}}),
-_react2.default.createElement(_input2.default,{ref:'piaSecret',placeholder:'PIA Secret',value:this.state.piaSecret,secret:true,onChangeText:function onChangeText(text){_this2.setState({piaSecret:text});}})),
-
-
-_react2.default.createElement(_reactNative.View,{style:styles.quarterHeight},
-_react2.default.createElement(_reactNativeButton2.default,{style:styles.configure,onPress:this.onConfigure.bind(this)},'Next')))));
+_react2.default.createElement(_reactNative.View,null,
+_react2.default.createElement(_reactNativeButton2.default,{style:styles.configure,onPress:this.onConfigure.bind(this)},'Weiter'))))));
 
 
 
 
 
 
+
+}},{key:'renderLogo',value:function renderLogo()
+
+{
+if(false){
+return null;
+}else{
+return(
+_react2.default.createElement(_reactNative.Image,{source:require(656 /* ./../logo.png */),style:[styles.logo]}));
+
+}
+}},{key:'renderQR',value:function renderQR()
+
+{
+if(this.state.keyboardShown){
+return null;
+}else{
+return(
+_react2.default.createElement(_reactNative.View,null,
+_react2.default.createElement(_reactNativeButton2.default,{style:styles.scan,onPress:this.onPressQRCode.bind(this)},'QR Code scannen'),
+
+
+_react2.default.createElement(_reactNative.Text,{style:styles.description},'oder selbst eingeben')));
+
+
+}
 }},{key:'onPressQRCode',value:function onPressQRCode()
 
 {
@@ -82580,14 +82553,14 @@ onSucess:this.onSucess.bind(this)}});
 
 result){
 var json=JSON.parse(result);
-this.setState({piaAddress:json.host,piaIdentifier:json.id,piaSecret:json.secret});
+this.setState({piaAddress:json.protocol+'//'+json.host,piaIdentifier:json.id,piaSecret:json.secret});
 }},{key:'onConfigure',value:function onConfigure()
 
 {
 this.props.navigator.push({
 id:'login',
 passProps:{
-piaAddress:this.state.piaAddress.replace(/^https?:\/\//,""),
+piaAddress:this.state.piaAddress.startsWith('http')?this.state.piaAddress:'http://'+this.state.piaAddress,
 piaIdentifier:this.state.piaIdentifier,
 piaSecret:this.state.piaSecret}});
 
@@ -82602,14 +82575,19 @@ flex:1,
 width:null,
 height:null},
 
+main:{
+flex:1,
+flexDirection:'row'},
+
 container:{
 flex:1,
 flexDirection:'column',
-alignItems:'center'},
+alignItems:'center',
+paddingTop:20},
 
 logo:{
-height:300,
-width:300,
+height:150,
+width:150,
 resizeMode:'contain'},
 
 form:{
@@ -82640,12 +82618,7 @@ color:'white',
 borderWidth:1,
 borderColor:'gray',
 borderBottomLeftRadius:1,
-borderRadius:10},
-
-quarterHeight:{
-flex:.25,
-backgroundColor:'transparent',
-alignItems:'stretch'}});exports.default=
+borderRadius:10}});exports.default=
 
 
 

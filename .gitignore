@@ -39,3 +39,6 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
+
+# OYD Keystore
+ownyourdata.keystore
