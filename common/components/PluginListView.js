@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { AppRegistry, AsyncStorage, ListView,Linking, StyleSheet,Text, TouchableHighlight,View } from 'react-native';
+import { 
+    AppRegistry, 
+    AsyncStorage, 
+    ListView,
+    Linking, 
+    StyleSheet,
+    Text, 
+    Image,
+    TouchableHighlight,
+    View 
+} from 'react-native';
 
 class PluginListView extends Component {
     constructor(props) {
@@ -41,22 +51,33 @@ class PluginListView extends Component {
     }
 
     rowPressed(plugin) {
-        if (plugin.url) {
-            Linking.openURL(plugin.url);
+        if (plugin.mobileurl) {
+            Linking.openURL(plugin.mobileurl);
         }
     }
 
+    renderHeader(){
+        return(
+            <View>
+                <Text style={styles.header}>Meine Apps</Text>
+            </View>
+        );
+    }
+
     renderRow(pluginData, sectionID, rowID) {
-        console.log(pluginData);
+        //console.log(pluginData);
+        var app_pic = pluginData.picture;
         return (
             <TouchableHighlight onPress={() => this.rowPressed(pluginData)}
                                 underlayColor='#dddddd'>
                 <View>
                     <View style={styles.rowContainer}>
                         <View  style={styles.textContainer}>
-                            <Text style={styles.title}>{pluginData.name}</Text>
-                            <Text style={styles.identifier}
-                                  numberOfLines={1}>{pluginData.identifier}</Text>
+                            <Text style={styles.titleContainer}>
+                                <Image style={styles.pic} source={{uri: app_pic}}/>
+                                <Text>   </Text>
+                                <Text style={styles.title}>{pluginData.name}</Text>
+                            </Text>
                         </View>
                     </View>
                     <View style={styles.separator}/>
@@ -65,13 +86,16 @@ class PluginListView extends Component {
         );
     }
 
-
     render() {
         var view;
         if(this.state.loading) {
             view = <Text>Lade...</Text>
         } else {
-            view =  <ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} />
+            view =  <ListView 
+                        dataSource={this.state.dataSource} 
+                        renderHeader={this.renderHeader.bind(this)}
+                        renderRow={this.renderRow.bind(this)} 
+                    />
         }
 
         return (
@@ -82,28 +106,35 @@ class PluginListView extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     textContainer: {
-        flex: 1
+        flex: 1,
+    },
+    titleContainer: {
+
+    },
+    header: {
+        fontSize: 20,
+        padding: 15,
     },
     separator: {
         height: 1,
-        backgroundColor: '#dddddd'
+        backgroundColor: '#dddddd',
     },
     title: {
         fontSize: 25,
         fontWeight: 'bold',
-        color: '#4475b8'
-    },
-    identifier: {
-        fontSize: 18,
-        color: '#656565'
+        color: '#444444',
     },
     rowContainer: {
         flexDirection: 'row',
         padding: 10,
-        backgroundColor: '#e0e6ee'
-    }
+        backgroundColor: '#ffffff',
+    },
+    pic: {
+        width: 50, 
+        height: 50,
+    },
 });
 
 export default PluginListView
